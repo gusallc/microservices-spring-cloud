@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "service-products", url = "localhost:8001/v1/products")
+@FeignClient(name = "service-products")
 public interface IProductClientRest {
 
-    @GetMapping
+    @GetMapping("/v1/products")
     List<Product> list();
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/products/{id}")
     Product details(@PathVariable Long id);
 }
