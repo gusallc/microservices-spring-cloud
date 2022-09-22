@@ -1,0 +1,7 @@
+#nombre del microservicio -> para posteriormente llamarlo por su nombre(en eureka, load balancer, etc) y no por el url del recurso u otro.
+spring:
+  application:
+    name: service-products
+
+server:
+  port: 8001
