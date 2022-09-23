@@ -4,10 +4,14 @@ spring:
     name: service-products
 
 server:
-  port: 8001
+  #  Enable random port with " :0 ", the application will assign an available port
+  port: ${PORT:0}
 
 eureka:
   client:
     service-url:
       #      Always enter the path where the eureka server is located.
       defaultZone: http://localhost:8761/eureka
+  # Config instance in eureka result in eureka example -> service-products:fa4c9bc6054ec308800185fe6436b3e2 , service-products:fdba861cf180f9d392fe7837a2fc7839
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
