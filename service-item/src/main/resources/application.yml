@@ -5,6 +5,8 @@ spring:
 server:
   port: 8002
 
-service-products:
-  ribbon:
-    listOfServers: localhost:8001,localhost:9001
+eureka:
+  client:
+    service-url:
+      #      Always enter the path where the eureka server is located.
+      defaultZone: http://localhost:8761/eureka
