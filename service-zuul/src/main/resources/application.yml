@@ -17,3 +17,9 @@ zuul:
     items:
       service-id: service-items
       path: /api/items/**
+
+# Hyxtrix and ribbon timeout configuration in ZUUL GATEWAY
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 20000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 10000
