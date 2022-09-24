@@ -32,6 +32,11 @@ public class ProductController {
     public Product details(@PathVariable Long id) {
         Product product = productService.findById(id);
         product.setPort(Integer.parseInt(Objects.requireNonNull(environment.getProperty("local.server.port"))));
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return product;
     }
 

@@ -10,3 +10,9 @@ eureka:
     service-url:
       #      Always enter the path where the eureka server is located.
       defaultZone: http://localhost:8761/eureka
+
+#  Hyxtrix and ribbon timeout configuration
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 20000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 10000
