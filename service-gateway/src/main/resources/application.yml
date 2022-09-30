@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: service-gateway-server
+  cloud:
+    gateway:
+      routes:
+        - id: service-products
+          # lb => Load Balancer
+          uri: lb://service-products
+          # The predicate also allows us to condition certain rules to our service.
+          # For example: you can put more than 1 path (separated by commas ","), also accept only requests of type post,
+          # put or others, also validate that they have certain headers or certain parameters in the request.
+          predicates:
+            - Path=/api/products/**
+          filters:
+            # The parts parameter indicates the number of parts in the path to strip from the request before sending it downstream
+            # When a request is made through the gateway to "/api/products/anything", the request made to "service-products" looks like service-products/anything.
+            - StripPrefix=2
+        - id: service-items
+          uri: lb://service-items
+          predicates:
+            - Path=/api/items/**
+          filters:
+            - StripPrefix=2
+
+server:
+  port: 8090
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
