@@ -10,18 +10,48 @@ spring:
           # The predicate also allows us to condition certain rules to our service.
           # For example: you can put more than 1 path (separated by commas ","), also accept only requests of type post,
           # put or others, also validate that they have certain headers or certain parameters in the request.
+          # https://docs.spring.io/spring-cloud-gateway/docs/3.1.4/reference/html/#gateway-request-predicates-factories
+          # predicates are filters to accept the client's request
+          # Note: If not all the correct predicates requested by the microservice are sent, it will return 404.
           predicates:
             - Path=/api/products/**
+            #- Header= token,\d+
+            #- Header=Content-type, application/json
+            # will only accept GET and POST requests.
+            #- Method=GET, POST
+            #- Query=color, verde  => when we want the key and the value to be equal, in order to make the request.
+            # when we want only the key to be equal, regardless of the value, in order to make the request.
+            #- Query=color
+            #- Cookie=color, azul
           filters:
             # The parts parameter indicates the number of parts in the path to strip from the request before sending it downstream
             # When a request is made through the gateway to "/api/products/anything", the request made to "service-products" looks like service-products/anything.
             - StripPrefix=2
+            # ======= First Method for use filters, no need to override "shortcutFieldOrder" method
+            # Example (prefix) <== Example{GatewayFilterFactory} = ExampleGatewayFilterFactory
+            #- name: Example
+            #  args:
+            #    message: Hello my custom message
+            #    cookieName: user
+            #    cookieValue: GustavoChiclla
+            # ======= Second Method for use filters, We need to override "shortcutFieldOrder" method in "ExampleGatewayFilterFactory" and order the parameters
+            #  1 - prefix default by class
+            #- Example=Hello my custom message, user, GustavoChiclla
+            #  2- prefix changed, overriding name() method of gateway.filter.factory.GatewayFilterFactory
+            - ExampleCookie=Hello my custom message, user, GustavoChiclla
+
         - id: service-items
           uri: lb://service-items
           predicates:
             - Path=/api/items/**
           filters:
             - StripPrefix=2
+            # Some default filters of "GatewayFilter Factories".
+            # https://docs.spring.io/spring-cloud-gateway/docs/3.1.4/reference/html/
+            - AddRequestHeader=X-Request-red, blue-request
+            - AddRequestParameter=lastname, chiclla
+            - AddResponseHeader=X-Response-Red, Blue-response
+            - SetResponseHeader=Content-Type, text/plain
 
 server:
   port: 8090

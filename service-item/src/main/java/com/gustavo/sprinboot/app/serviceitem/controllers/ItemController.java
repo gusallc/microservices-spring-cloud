@@ -20,7 +20,9 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<Item> list() {
+    public List<Item> list(@RequestParam(name = "lastname", required = false) String lastname, @RequestHeader(name = "X-Request-red", required = false) String requestHeader) {
+        System.out.println("lastname = " + lastname);
+        System.out.println("requestHeader = " + requestHeader);
         return itemService.findAll();
     }
 
