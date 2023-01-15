@@ -29,11 +29,11 @@ public class ExampleGlobalFilter implements GlobalFilter, Ordered {
                 .then(Mono.fromRunnable(() -> {
                     logger.info("Running post-filter");
                     //Intercept and get header
-                    Optional.ofNullable(exchange.getRequest().getHeaders().getFirst("token"))
-                            //set token value in the request response
-                            .ifPresent(value -> exchange.getResponse().getHeaders().add("token", value)); // RESPONSE (writing header)
+//                    Optional.ofNullable(exchange.getRequest().getHeaders().getFirst("token"))
+//                            //set token value in the request response
+//                            .ifPresent(value -> exchange.getResponse().getHeaders().add("token", value)); // RESPONSE (writing header)
 
-                    exchange.getResponse().getCookies().add("color", ResponseCookie.from("color", "red").build());
+//                    exchange.getResponse().getCookies().add("color", ResponseCookie.from("color", "red").build());
 //                    exchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
                 }));
     }

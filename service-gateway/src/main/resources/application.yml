@@ -1,3 +1,24 @@
+resilience4j:
+  circuitbreaker:
+    configs:
+      config-by-default:
+        sliding-window-size: 6
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 20s
+        permitted-number-of-calls-in-half-open-state: 4
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+    instances:
+      products:
+        base-config: config-by-default
+  timelimiter:
+    configs:
+      config-by-default:
+        timeout-duration: 2s
+    instances:
+      products:
+        base-config: config-by-default
+
 spring:
   application:
     name: service-gateway-server
@@ -24,6 +45,11 @@ spring:
             #- Query=color
             #- Cookie=color, azul
           filters:
+            - name: CircuitBreaker
+              args:
+                name: products
+                statusCodes: 500
+                fallbackUri: forward:/api/items/v1/items/8?quantity=5
             # The parts parameter indicates the number of parts in the path to strip from the request before sending it downstream
             # When a request is made through the gateway to "/api/products/anything", the request made to "service-products" looks like service-products/anything.
             - StripPrefix=2
